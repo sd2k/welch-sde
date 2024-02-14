@@ -85,15 +85,11 @@ impl<'a, T: Signal, W: Window<T>> Welch<'a, T, W> {
             .windows(n)
             .step_by(d)
             .flat_map(|s| {
-                let mut buffer: Vec<Complex<T>> = vec![Complex::zero(); m];
                 s.iter()
+                    .take(m)
                     .zip(self.window.weights())
-                    .map(|(&x, &w)| x * w)
-                    .zip(&mut buffer)
-                    .for_each(|(v, c)| {
-                        c.re = v;
-                    });
-                buffer
+                    .map(|(&x, &w)| Complex::new(x * w, T::zero()))
+                    .chain(std::iter::repeat(Complex::zero()).take(m - n))
             })
             .collect()
     }
