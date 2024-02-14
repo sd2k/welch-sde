@@ -17,5 +17,10 @@ rustfft = "6.0.1"
 
 [dev-dependencies]
 complot = "0.3.2"
+criterion = "0.5.1"
 rand = "0.8.4"
 rand_distr = "0.4.2"
+
+[[bench]]
+name = "spectral_density"
+harness = false
